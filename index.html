@@ -8,26 +8,60 @@
 <body style = "text-align:center;" id = "body">
 
     <h1 style = "color:#345456;"> PSI data from data gov </h1>
-    <div class="main"></div>
+    <div class="main" id = "main"></div>
     <table align = "center" id="table" border="1"></table>
 
     <p id = "GFG_UP" style =
         "font-size: 15px; font-weight: bold;">
     </p>
-    <button onclick = "constructTable('#table')">
-        click here
-    </button>
     <script>
+
         
-        var url = 'https://api.data.gov.sg/v1/environment/psi';
-        let mydata = {}
-        fetch(url)
-          .then(response => response.json())
-          .then(data => {
-            console.log(data);
+        
+        var myData;
+        fetch('https://api.data.gov.sg/v1/environment/psi')
+            .then(response => response.json())
+            .then(data => myData = data)
+            .then(() => this.myFunction(myData));
 
-        });
+        function myFunction(data) {
 
+            var list = []
+
+            var readings = data.items[0].readings;
+
+            var table = document.createElement("table"), row,index,key,national,north,south,east,west,central;
+            document.getElementById("main").appendChild(table);
+
+            row = table.insertRow();
+            key = row.insertCell().innerHTML = '';
+            key = row.insertCell().innerHTML = 'key';
+            national = row.insertCell().innerHTML = 'national';
+            north = row.insertCell().innerHTML = 'north';
+            south = row.insertCell().innerHTML = 'south';
+            east = row.insertCell().innerHTML = 'east';
+            west = row.insertCell().innerHTML = 'west';
+            central = row.insertCell().innerHTML = 'central';
+
+            var index = 1;
+            for(key in readings){
+                value = readings[key];
+
+                row = table.insertRow();
+                index = row.insertCell().innerHTML = index;
+                key = row.insertCell().innerHTML = key;
+                national = row.insertCell().innerHTML = value.national;
+                north = row.insertCell().innerHTML = value.north;
+                south = row.insertCell().innerHTML = value.south;
+                east = row.insertCell().innerHTML = value.east;
+                west = row.insertCell().innerHTML = value.west;
+                central = row.insertCell().innerHTML = value.central;
+
+                console.log(key);
+                console.table(value);
+                index ++;
+            }
+        }
 
     </script>
 </body>
