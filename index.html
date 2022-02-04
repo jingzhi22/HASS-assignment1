@@ -1,23 +1,28 @@
 
 <!DOCTYPE HTML>
-<html>
-<head>
-    <title>Pollutant Standards Index</title>
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
-</head>
-<body style = "text-align:center;" id = "body">
+    <html>
+    <head>
+        <title>Pollutant Standards Index</title>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+        <link rel="stylesheet" href="mystyle.css">
+    </head>
 
-    <h1 style = "color:#345456;"> PSI data from data gov </h1>
-    <div class="main" id = "main"></div>
-    <table align = "center" id="table" border="1"></table>
+    <body style = "text-align:center;" id = "body">
+        <h1 style = "color:#345456;"> PSI data from data gov </h1>
+        <h2 id="displayDateTime"></h2>
+        <div align = "center" class="main" id = "main"></div>
+        <table id="table" border="1"></table>
+    </body>
 
-    <p id = "GFG_UP" style =
-        "font-size: 15px; font-weight: bold;">
-    </p>
     <script>
-
+        // OBJECT TO SET DATETIME
+        var today = new Date();
+        var date = today.getFullYear()+'-'+(today.getMonth()+1)+'-'+today.getDate();
+        var time = today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds();
+        var dateTime = date+' '+time;
+        document.getElementById("displayDateTime").innerHTML = 'data retrieved on: ' + dateTime
         
-        
+        // OBJECT TO STORE DATA AND CREATE TABLE
         var myData;
         fetch('https://api.data.gov.sg/v1/environment/psi')
             .then(response => response.json())
@@ -62,7 +67,5 @@
                 index ++;
             }
         }
-
     </script>
-</body>
 </html>
