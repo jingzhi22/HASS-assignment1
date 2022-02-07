@@ -11,6 +11,15 @@
         <h2 id="displayDateTime"></h2>
         <div align = "center" class="main" id = "main"></div>
         <table id="table" border="1"></table>
+        <pre> 
+            Notes
+
+            Keys are sorted by alphabetical order 
+            with PSI at the final row to summarize the 'health' of air. 
+
+            PSI is categoriically colored. Color scale from green to red is remapped to suit Singapore's expected range. 
+            (80 shown as red, where as 80 might be a 'normal' value elsewhere)
+        </pre>
     </body>
 
     <script>
@@ -28,11 +37,32 @@
             .then(data => myData = data)
             .then(() => this.myFunction(myData));
 
+        function healthyPSIColor(data){
+            let healthy = ['#42f54e','#bff542','#f5dd42','#f58d42','#f54b42']
+            let psiCondition = [20,40,60,80]
+
+            let color;
+
+            if(data <= 20){color = healthy[0];}
+            else if(20 < data && data <= 30) {color = healthy[1];}
+            else if(30 < data && data <= 50) {color = healthy[2];}
+            else if(60 < data && data <= 80) {color = healthy[3];}
+            else {color = healthy[4];}
+
+            return color;
+        }
+
         function myFunction(data) {
 
-            var list = []
-
             var readings = data.items[0].readings;
+
+            var keys = Object.keys(readings);
+            var sortedKeys = Object.keys(readings).sort();
+
+            console.log(readings);
+            console.log(sortedKeys);
+
+
 
             var table = document.createElement("table"), row,index,key,national,north,south,east,west,central;
             document.getElementById("main").appendChild(table);
@@ -47,24 +77,39 @@
             west = row.insertCell().innerHTML = 'west';
             central = row.insertCell().innerHTML = 'central';
 
-            var index = 1;
-            for(key in readings){
-                value = readings[key];
+            var rowNumber = 1;
+            for(let i = 0; i < 12; i ++){
 
+                value = readings[sortedKeys[i]];
                 row = table.insertRow();
-                index = row.insertCell().innerHTML = index;
-                key = row.insertCell().innerHTML = key;
+                row.insertCell().innerHTML = rowNumber;
+                key = row.insertCell().innerHTML = sortedKeys[i];
                 national = row.insertCell().innerHTML = value.national;
                 north = row.insertCell().innerHTML = value.north;
                 south = row.insertCell().innerHTML = value.south;
                 east = row.insertCell().innerHTML = value.east;
                 west = row.insertCell().innerHTML = value.west;
                 central = row.insertCell().innerHTML = value.central;
-
-                console.log(key);
                 console.table(value);
-                index ++;
+
+                
+                if([10].includes(rowNumber)){
+                    table.rows[rowNumber].cells[2].style.backgroundColor = healthyPSIColor(value.national);
+                    table.rows[rowNumber].cells[3].style.backgroundColor = healthyPSIColor(value.north);
+                    table.rows[rowNumber].cells[4].style.backgroundColor = healthyPSIColor(value.south);
+                    table.rows[rowNumber].cells[5].style.backgroundColor = healthyPSIColor(value.east);
+                    table.rows[rowNumber].cells[6].style.backgroundColor = healthyPSIColor(value.west);
+                    table.rows[rowNumber].cells[7].style.backgroundColor = healthyPSIColor(value.central);
+                }
+                rowNumber ++;
             }
+
+            $("tbody tr:nth-child(11)").insertAfter("tbody tr:nth-child(13)");
+            
+            for(let i=1; i<13; i++){
+                table.rows[i].cells[0].innerHTML = i;
+            }          
         }
+        
     </script>
 </html>

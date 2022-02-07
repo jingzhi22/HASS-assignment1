@@ -3,9 +3,14 @@ main {display: flex;}
 main > * {border: 1px solid;}
 table {border-collapse: collapse; font-family: helvetica}
 
+pre {
+    text-align: center;
+    white-space: pre-line;
+  }
+
 td, th {border:  1px solid;
       padding: 10px;
-      min-width: 200px;
+      min-width: 50px;
       background: white;
       box-sizing: border-box;
       text-align: left;
@@ -30,6 +35,9 @@ tfoot {
   bottom: 0;
   z-index: 2;
 }
+tr:nth-last-child(1) {
+  border: 3px solid;
+}
 
 tfoot td {
   position: sticky;
@@ -37,8 +45,6 @@ tfoot td {
   z-index: 2;
   background: hsl(20, 50%, 70%);
 }
-
-
 
 tbody {
   overflow: scroll;
