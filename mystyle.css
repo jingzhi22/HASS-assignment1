@@ -35,6 +35,7 @@ tfoot {
   bottom: 0;
   z-index: 2;
 }
+
 tr:nth-last-child(1) {
   border: 3px solid;
 }
